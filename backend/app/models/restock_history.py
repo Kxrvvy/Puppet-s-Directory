@@ -13,5 +13,5 @@ class RestockHistory(Base):
     quantity_added = Column(Integer, nullable=False)
     restock_date = Column(DateTime, default=func.now())
     
-    prodcut_variant = relationship("ProductVariant", back_populates="restock_history")
+    product_variant = relationship("ProductVariant", back_populates="restock_history")
     user = relationship("User", back_populates="restock_history")
