@@ -5,6 +5,7 @@ from app.schemas.transaction import TransactionResponse
 
 class POSCreate(BaseModel):
     payment_method: str
+    amount_tendered: float
     items: List[SalesInvoiceCreate]  # list of items being sold
 
 class POSResponse(BaseModel):
@@ -13,8 +14,6 @@ class POSResponse(BaseModel):
     total_amount: float
     change: float
     amount_tendered: float
-
-class POSCreate(BaseModel):
-    payment_method: str
-    amount_tendered: float
-    items: List[SalesInvoiceCreate]
+    
+    class Config:
+        from_attribute = True
