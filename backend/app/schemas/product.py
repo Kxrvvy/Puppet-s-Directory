@@ -28,4 +28,4 @@ class ProductResponse(BaseModel):
     created_at: datetime #ask if need to add
     
     class Config:
-        form_attribute = True
+        from_attribute = True

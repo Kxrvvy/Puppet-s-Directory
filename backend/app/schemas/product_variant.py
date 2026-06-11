@@ -27,4 +27,4 @@ class ProductVariantResponse(BaseModel):
     status: str
     
     class Config:
-        orm_mode = True
+        from_attribute = True

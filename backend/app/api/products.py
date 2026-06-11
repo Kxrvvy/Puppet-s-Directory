@@ -61,3 +61,119 @@ async def get_product(
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found.")
     
     return product
+
+@router.put("/{product_id}", summary="Update Product", description="Admin only. Updates a product's details.")
+async def update_product(
+    product_id: int,
+    product_data: ProductUpdate,
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(require_admin)
+) -> ProductResponse:
+    
+    result = await db.execute(select(Product).where(Product.product_id == product_id))
+    product = result.scalar_one_or_none()
+    
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+        
+    if product_data.item_name is not None:
+        product.item_name = product_data.item_name
+    if product_data.description is not None:
+        product.description = product_data.desciption
+    if product_data.base_price is not None:
+        product.base_price = product_data.base_price
+    if product_data.category is not None:
+        product.category = product_data.category
+    if product_data.image_url is not None:
+        product.image_url = product_data.image_url
+    if product_data.status is not None:
+        product.status = product_data.status
+    
+    await db.commit()
+    await db.refresh(product)
+    
+    return product
+
+@router.patch("/{product_id}/deactivate", summary="Deactivate Product", description="Admin only. Marks a product as inactive.")
+async def deactivate_product(
+    product_id: int,
+    db: AsyncSession = Depends(get_db),
+    currrent_user = Depends(require_admin)
+) -> ProductResponse:
+    
+    result = await db.execute(select(Product).where(Product.product_id == product_id))
+    product = result.scalar_one_or_none()
+    
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+    
+    if product.status == "inactive":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Product is already inactive"
+        )
+        
+    product.status = "inactive"
+    
+    db.commit()
+    db.refresh(product)
+    
+    return product
+
+@router.patch("/{product_id}/activate", summary="Activate Product", description="Admin only. Marks a product as active.")
+async def activate_product(
+    product_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(require_admin)
+) -> ProductResponse:
+    
+    result = await db.execute(select(Product).where(Product.product_id == product_id))
+    product = result.scalar_one_or_none()
+    
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+    
+    if product.status == "active":
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="Product is already active"
+        )
+    
+    product.status = "active"
+    await db.commit()
+    await db.refresh(product)
+    
+    return product
+    
+    
+@router.delete("/{product_id}", summary="Delete Product", description="Admin only. Permanently deletes a product.")
+async def delete_product(
+    product_id: int,
+    db: AsyncSession = Depends(get_db),
+    current_user = Depends(require_admin)
+):
+    
+    result = await db.execute(select(Product).where(Product.product_id == product_id))
+    product = result.scalar_one_or_none()
+    
+    if not product:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Product not found"
+        )
+        
+    await db.delete(product)
+    await db.commit()
+    
+    return {"message": f"Product '{product.item_name}' deleted successfully"}
+    
+    
