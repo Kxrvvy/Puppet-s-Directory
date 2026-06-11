@@ -4,7 +4,6 @@ from typing import Optional
 class SalesInvoiceCreate(BaseModel):
     variant_id: int
     quantity_sold: int
-    unit_price: float
 
 class SalesInvoiceResponse(BaseModel):
     invoice_id: int
