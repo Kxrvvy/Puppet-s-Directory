@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.orm import selectinload
 from app.models import ProductVariant, Transaction, SalesInvoice, Product
 from app.database import get_db
 from app.dependencies import require_staff
@@ -23,7 +24,9 @@ async def transaction(
     
     for item in pos_data.items:
         
-        result = await db.execute(select(ProductVariant).where(ProductVariant.variant_id == item.variant_id))
+        result = await db.execute(select(ProductVariant)
+                                  .options(selectinload(ProductVariant.product))
+                                  .where(ProductVariant.variant_id == item.variant_id))
         variant = result.scalar_one_or_none()
         
         if not variant:
@@ -33,7 +36,6 @@ async def transaction(
             )
             
         # check if variant has enough stock
-
         if variant.quantity_in_stock < item.quantity_sold:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -41,9 +43,9 @@ async def transaction(
             )
             
         # Calculate Total amount 
-        actual_price = Product.base_price
+        actual_price = variant.product.base_price
         total_amount += actual_price * item.quantity_sold
-        validated_items.append((variant, item))
+        validated_items.append((variant, item, actual_price))
         
     # check if amount tendered is enough
     
@@ -62,11 +64,11 @@ async def transaction(
     )
     
     db.add(transaction)
-    await db.flush
+    await db.flush()
     
     invoices = []
     
-    for variant, item in validated_items:
+    for variant, item, actual_price in validated_items:
         invoice = SalesInvoice(
             transaction_id = transaction.transaction_id,
             variant_id = item.variant_id,

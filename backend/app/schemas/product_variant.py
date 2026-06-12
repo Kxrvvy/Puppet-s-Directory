@@ -28,3 +28,14 @@ class ProductVariantResponse(BaseModel):
     
     class Config:
         from_attribute = True
+        
+class LowStockResponse(BaseModel):
+    variant_id: int
+    product_name: str
+    size: str
+    color: str
+    quantity_in_stock: int
+    stock_threshold: int
+    
+    class Config:
+        from_attributes = True
