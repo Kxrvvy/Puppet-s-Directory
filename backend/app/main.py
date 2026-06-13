@@ -8,6 +8,7 @@ from app.api.restock import router as restock_router
 from app.api.pos import router as pos_router
 from app.api.notification import router as notif_router
 from app.api.reports import router as reports_router
+from app.api.dashboard import router as dashboard_router
 
 app = FastAPI(
     title="Puppet's Directory API", 
@@ -30,6 +31,7 @@ app.include_router(restock_router, prefix="/restock", tags=["Restock"])
 app.include_router(pos_router, prefix="/pos", tags = ["POS"])
 app.include_router(notif_router, prefix="/notification", tags = ["Low Stock Alert"])
 app.include_router(reports_router, prefix="/reports", tags=["Reports"])
+app.include_router(dashboard_router, prefix="/dashboard", tags=["Dashboard"])
 
 @app.get("/", tags=["Root"])
 async def root():
