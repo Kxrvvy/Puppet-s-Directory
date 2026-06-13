@@ -23,6 +23,8 @@ async def generate_report(db: AsyncSession, start_date: datetime, period: str):
         total_sales += sales.total_amount
 
     total_transaction = len(report)
+    
+    avg_per_transaction = round(total_sales / total_transaction, 2) if total_transaction > 0 else 0
 
     top_items_result = await db.execute(
         select(SalesInvoice.variant_id,
@@ -52,12 +54,32 @@ async def generate_report(db: AsyncSession, start_date: datetime, period: str):
             "color": variant.color,
             "total_sold": item.total_sold
         })
+        
+    recent_tx_result = await db.execute(
+        select(Transaction)
+        .where(Transaction.purchased_at >= start_date)
+        .order_by(Transaction.purchased_at.desc())
+        .limit(5)
+        )
+    recent_tx = recent_tx_result.scalars().all()
+
+    recent_transactions = [
+        {
+            "transaction_id": tx.transaction_id,
+            "payment_method": tx.payment_method,
+            "total_amount": tx.total_amount,
+            "purchased_at": tx.purchased_at
+        }
+        for tx in recent_tx
+    ]
 
     return {
-        "period": period,
-        "total_sales": total_sales,
-        "total_transaction": total_transaction,
-        "top_items": top_selling_items
+    "period": period,
+    "total_sales": total_sales,
+    "total_transaction": total_transaction,
+    "avg_per_transaction": avg_per_transaction,
+    "top_items": top_selling_items,
+    "recent_transactions": recent_transactions
     }
 
 
