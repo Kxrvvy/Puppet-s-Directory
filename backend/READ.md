@@ -131,7 +131,7 @@ python -c "import secrets; print(secrets.token_hex(32))"
 ### 5. Run migrations
 This will create all the tables in your local `puppets_directory` database automatically:
 ```bash
-alembic upgrade head
+D
 ```
 
 You should see:
