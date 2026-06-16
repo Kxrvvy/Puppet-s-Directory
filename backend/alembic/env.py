@@ -1,5 +1,5 @@
 from logging.config import fileConfig
-
+from app.utils.config import settings
 from sqlalchemy import engine_from_config
 from app.models import *
 from app.database import Base
@@ -40,7 +40,7 @@ def run_migrations_offline() -> None:
     script output.
 
     """
-    url = config.get_main_option("sqlalchemy.url")
+    url = config.get_main_option("+asyncpg", "+psycopg2")
     context.configure(
         url=url,
         target_metadata=target_metadata,
@@ -60,7 +60,7 @@ def run_migrations_online() -> None:
 
     """
     connectable = engine_from_config(
-        config.get_section(config.config_ini_section, {}),
+        {"sqlalchemy.url": settings.DATABASE_URL.replace("+asyncpg", "+psycopg2")},
         prefix="sqlalchemy.",
         poolclass=pool.NullPool,
     )
