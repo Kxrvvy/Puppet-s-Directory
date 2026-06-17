@@ -59,6 +59,8 @@ def run_migrations_online() -> None:
     and associate a connection with the context.
 
     """
+
+    print(f"DEBUG: Connecting to: {settings.DATABASE_URL}")
     connectable = engine_from_config(
         {"sqlalchemy.url": settings.DATABASE_URL.replace("+asyncpg", "+psycopg2")},
         prefix="sqlalchemy.",
