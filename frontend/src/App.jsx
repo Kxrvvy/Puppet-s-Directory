@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginPage from './Features/login'; 
 import AdminDashboard from './Features/Admin/dashboard';
+import AdminInventory from './Features/Admin/Inventory';
 
 export default function App() {
   return (
@@ -10,6 +11,7 @@ export default function App() {
         <Route path="/" element={<LoginPage />} />
 
         <Route path="/dashboard"  element={<AdminDashboard />} />
+        <Route path="/inventory" element={<AdminInventory />} />
       </Routes>
     </Router>
   );
