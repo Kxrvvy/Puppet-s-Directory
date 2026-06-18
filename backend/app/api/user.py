@@ -36,7 +36,10 @@ async def create_user(
     
     new_user = User(
         username=user_data.username,
+        name=user_data.name,
         email=user_data.email,
+        phone=user_data.phone,        
+        dateHired=user_data.dateHired,
         password=hash_password(user_data.password),
         role="staff"
     )
@@ -78,9 +81,15 @@ async def update_staff(
         
     if user_data.username is not None:
         user.username = user_data.username
+    if user_data.name is not None: 
+            user.name = user_data.name
     if user_data.email is not None:
         user.email = user_data.email
-    if user_data.password is not None:
+    if user_data.phone is not None:
+        user.phone = user_data.phone    
+    if user_data.dateHired is not None: 
+        user.dateHired = user_data.dateHired
+    if user_data.password:
         user.password = hash_password(user_data.password)
         
     await db.commit()

@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Date
 from sqlalchemy.orm import relationship
 from app.database import Base
 from sqlalchemy.sql import func
@@ -9,7 +9,10 @@ class User(Base):
     
     user_id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, nullable=False)
+    name = Column(String(100), nullable=True)
     email = Column(String(100), unique=True, nullable=False)
+    phone = Column(String(20), nullable=True)       
+    dateHired = Column(Date, nullable=True)
     password = Column(String(255), nullable=False)
     role = Column(String(50), nullable=False, default="staff")
     created_at = Column(DateTime, server_default=func.now())
