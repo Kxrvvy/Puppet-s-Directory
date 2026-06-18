@@ -41,7 +41,7 @@ async def admin_dashboard(
     total_low_stock = len(stock)
     
     # daily sales
-    start_date = datetime.now(timezone.utc) - timedelta(days=1)
+    start_date = (datetime.now(timezone.utc) - timedelta(days=1)).replace(tzinfo=None)
     daily_data = await generate_report(db, start_date, "daily")
     
     todays_sale = daily_data["total_sales"]
