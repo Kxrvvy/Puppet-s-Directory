@@ -197,7 +197,7 @@ export default function AdminInventory() {
     <div className="p-8">
       <div className="bg-neutral-100 rounded-xl p-6">
 
-        <div className="flex items-center justify-between mb-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
           <div className="flex items-center gap-2">
             <Package size={20} />
             <h1 className="font-black text-2xl">
@@ -248,7 +248,7 @@ export default function AdminInventory() {
                 key={item.product_id}
                 className="flex flex-wrap items-center justify-between gap-3 bg-white border border-neutral-200 rounded-xl px-4 py-3 shadow-sm"
               >
-                <div className="flex items-center gap-3 min-w-50">
+                <div className="flex items-center gap-3 flex-1 min-w-0">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
