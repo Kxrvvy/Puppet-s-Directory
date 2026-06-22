@@ -116,7 +116,7 @@ export default function EditInventoryModal({ item, onClose, onSave, loading }) {
 
   // ── Add variant ──
   const handleAddVariant = async () => {
-    if (!newVariant.size || !newVariant.color.trim()) return alert('Size and color are required.');
+    if (!newVariant.size || !(newVariant.color || '').trim()) return alert('Size and color are required.');
     const token = localStorage.getItem('token');
     setVariantBusy(true);
     try {

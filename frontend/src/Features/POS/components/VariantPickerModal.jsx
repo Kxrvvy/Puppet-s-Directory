@@ -70,12 +70,12 @@ export default function VariantPickerModal({ product, onClose, onAdd }) {
       >
         {/* Header */}
         <div className="flex items-start gap-4 p-5 border-b border-gray-100 shrink-0">
-          <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-gray-100">
+          <div className="w-16 h-16 rounded-xl overflow-hidden shrink-0 bg-white border border-gray-100">
             {product.image_url ? (
               <img
                 src={product.image_url}
                 alt={product.item_name}
-                className="w-full h-full object-cover"
+                className="w-full h-full object-contain"
                 onError={(e) => { e.target.style.display = 'none'; e.target.nextSibling.style.display = 'flex'; }}
               />
             ) : null}

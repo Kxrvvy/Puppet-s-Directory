@@ -92,10 +92,10 @@ export default function AdminInventory() {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
-          item_name: form.item_name.trim(),
+          item_name: (form.item_name || '').trim(),
           category: form.category,
           base_price: Number(form.base_price) || 0,
-          image_url: form.image_url.trim() || null,
+          image_url: (form.image_url || '').trim() || null,
           status: form.status,
         }),
       });
@@ -108,18 +108,19 @@ export default function AdminInventory() {
       const newProduct = await productRes.json();
 
       for (const v of variants) {
-        if (!v.size.trim() || !v.color.trim()) continue;
+        const size = (v.size || '').trim();
+        const color = (v.color || '').trim();
+        if (!size || !color) continue;
 
         const variantRes = await fetch(`${API_BASE}/product_variants/`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
           body: JSON.stringify({
             product_id: newProduct.product_id,
-            size: v.size.trim(),
-            color: v.color.trim(),
+            size,
+            color,
             quantity_in_stock: Number(v.quantity_in_stock) || 0,
             stock_threshold: Number(v.stock_threshold) || 0,
-            image_url: v.image_url.trim() || null,
           }),
         });
 
@@ -146,10 +147,10 @@ export default function AdminInventory() {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
         body: JSON.stringify({
-          item_name: form.item_name.trim(),
+          item_name: (form.item_name || '').trim(),
           category: form.category,
           base_price: Number(form.base_price) || 0,
-          image_url: form.image_url.trim() || null,
+          image_url: (form.image_url || '').trim() || null,
           status: form.status,
         }),
       });

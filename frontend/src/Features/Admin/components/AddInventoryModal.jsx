@@ -82,7 +82,7 @@ export default function AddInventoryModal({ onClose, onSave, loading }) {
   };
 
   const handleSubmit = () => {
-    if (!form.item_name.trim()) return;
+    if (!(form.item_name || '').trim()) return;
     onSave(form, buildVariants());
   };
 
