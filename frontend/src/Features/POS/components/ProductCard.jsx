@@ -19,12 +19,12 @@ export default function ProductCard({ product, onClick }) {
       className="group bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 hover:border-gray-200 transition-all duration-150 active:scale-[0.97] flex flex-col overflow-hidden text-left"
     >
       {/* Image */}
-      <div className="w-full aspect-square overflow-hidden bg-gray-100">
+      <div className="w-full aspect-square overflow-hidden bg-white">
         {product.image_url ? (
           <img
             src={product.image_url}
             alt={product.item_name}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+            className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-200"
             onError={(e) => {
               e.target.style.display = 'none';
               e.target.nextSibling.style.display = 'flex';
