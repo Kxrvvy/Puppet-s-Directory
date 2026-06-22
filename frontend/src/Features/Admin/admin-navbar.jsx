@@ -1,16 +1,21 @@
 import { useNavigate } from 'react-router-dom';
-import { User, Menu, X, LayoutDashboard, Package, FileText, Users, UserCircle, LogOut } from 'lucide-react';
+import { User, Menu, X, LayoutDashboard, Package, FileText, Users, UserCircle, LogOut, ShoppingCart } from 'lucide-react';
 import Logo from '../../assets/logo.png'; 
 
 export default function AdminNavbar({ isOpen, setIsOpen, userRole = "Admin", userName = "Admin User", onLogout }) {
   const navigate = useNavigate();
 
-  const menuItems = [
-    { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} /> },
-    { name: 'Inventory', path: '/inventory', icon: <Package size={20} /> },
-    { name: 'Reports', path: '/reports', icon: <FileText size={20} /> },
-    { name: 'Staff', path: '/staff', icon: <Users size={20} /> },
+  const allMenuItems = [
+    { name: 'Dashboard', path: '/dashboard', icon: <LayoutDashboard size={20} />, adminOnly: true },
+    { name: 'Inventory', path: '/inventory', icon: <Package size={20} />, adminOnly: true },
+    { name: 'POS', path: '/pos', icon: <ShoppingCart size={20} />, adminOnly: false },
+    { name: 'Reports', path: '/reports', icon: <FileText size={20} />, adminOnly: true },
+    { name: 'Staff', path: '/staff', icon: <Users size={20} />, adminOnly: true },
   ];
+
+  const menuItems = userRole === 'admin'
+    ? allMenuItems
+    : allMenuItems.filter((item) => !item.adminOnly);
 
   const getInitials = (name) => {
     if (!name) return "??";

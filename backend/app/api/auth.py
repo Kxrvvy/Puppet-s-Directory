@@ -24,6 +24,12 @@ async def login(
             detail="Invalid username or password",
             headers={"WWW-Authenticate": "Bearer"},
         )
+
+    if getattr(user, 'status', 'active') == 'inactive':
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="This account has been deactivated. Please contact your administrator.",
+        )
         
     access_token = create_access_token(data={
         "sub": str(user.user_id),

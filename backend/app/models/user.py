@@ -15,6 +15,7 @@ class User(Base):
     dateHired = Column(Date, nullable=True)
     password = Column(String(255), nullable=False)
     role = Column(String(50), nullable=False, default="staff")
+    status = Column(String(20), nullable=False, default="active")
     created_at = Column(DateTime, server_default=func.now())
     
     transactions = relationship("Transaction", back_populates="user")

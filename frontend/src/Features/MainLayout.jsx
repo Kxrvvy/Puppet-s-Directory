@@ -16,10 +16,16 @@ export default function MainLayout() {
   };
 
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+
     fetch('http://localhost:8000/auth/me', {
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+      headers: { 'Authorization': `Bearer ${token}` }
     })
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error('Session expired. Please log in again.');
+        return res.json();
+      })
       .then(data => setUserData({ name: data.username, role: data.role }))
       .catch(err => console.error("Failed to fetch user:", err));
   }, []);

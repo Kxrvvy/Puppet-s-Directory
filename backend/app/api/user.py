@@ -91,7 +91,9 @@ async def update_staff(
         user.dateHired = user_data.dateHired
     if user_data.password:
         user.password = hash_password(user_data.password)
-        
+    if user_data.status is not None:
+        user.status = user_data.status
+
     await db.commit()
     await db.refresh(user)
     

@@ -9,6 +9,7 @@ class ProductVariantCreate(BaseModel):
     color: str
     stock_threshold: int
     quantity_in_stock: int
+    image_url: Optional[str] = None
     
 class ProductVariantUpdate(BaseModel):
     size: Optional[str] = None
@@ -25,9 +26,9 @@ class ProductVariantResponse(BaseModel):
     quantity_in_stock: int
     image_url: Optional[str] = None
     status: str
-    
+
     class Config:
-        from_attribute = True
+        from_attributes = True
         
 class LowStockResponse(BaseModel):
     variant_id: int

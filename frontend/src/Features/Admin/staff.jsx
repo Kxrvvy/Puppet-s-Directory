@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import AddEmployeeModal from './admin-modal/addEmployeeModal';
-import DeleteAccountModal from './admin-modal/deleteAccountModal';
+import AddEmployeeModal from './components/addEmployeeModal';
+import DeleteAccountModal from './components/deleteAccountModal';
 
 export default function Staff() {
   const [staffList, setStaffList] = useState([]);
@@ -68,7 +68,16 @@ export default function Staff() {
               {getInitials(staff.name)}
             </div>
             
-            <h3 className="font-black text-sm text-neutral-900">{staff.name}</h3>
+            <div className="flex items-center justify-between mb-0.5">
+              <h3 className="font-black text-sm text-neutral-900">{staff.name}</h3>
+              <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
+                staff.status === 'inactive'
+                  ? 'bg-red-100 text-red-600'
+                  : 'bg-green-100 text-green-700'
+              }`}>
+                {staff.status === 'inactive' ? 'INACTIVE' : 'ACTIVE'}
+              </span>
+            </div>
             <p className="text-xs font-bold text-neutral-500 mb-6">{staff.username}</p>
             
             <div className="bg-neutral-700 text-white p-4 rounded-2xl text-[10px]">

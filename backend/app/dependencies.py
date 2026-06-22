@@ -14,6 +14,9 @@ async def get_current_user(
     db: AsyncSession = Depends(get_db)
 ) -> User:
     
+    print("=== GET_CURRENT_USER CALLED ===")
+    print("TOKEN:", token[:20] if token else "NO TOKEN")
+    
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Invalid or expired token",
@@ -21,18 +24,25 @@ async def get_current_user(
     )
     
     payload = verify_token(token)
+    print("PAYLOAD:", payload)
     
     if payload is None:
+        print("PAYLOAD IS NONE - RAISING 401")
         raise credentials_exception
     
     user_id: int = payload.get("sub")
+    print("USER_ID:", user_id)
+    
     if user_id is None:
+        print("USER_ID IS NONE - RAISING 401")
         raise credentials_exception
     
     result = await db.execute(select(User).where(User.user_id == int(user_id)))
     user = result.scalar_one_or_none()
+    print("USER FOUND:", user)
     
     if user is None:
+        print("USER IS NONE - RAISING 401")
         raise credentials_exception
     
     return user

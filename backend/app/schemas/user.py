@@ -18,7 +18,8 @@ class UserUpdate(BaseModel):
     phone: Optional[str] = None
     dateHired: Optional[date] = None
     password: Optional[str] = None
-    
+    status: Optional[str] = None
+
 class UserResponse(BaseModel):
     message: Optional[str] = None
     user_id: int
@@ -27,6 +28,7 @@ class UserResponse(BaseModel):
     email: EmailStr
     phone: Optional[str] = None
     role: str
+    status: str = "active"
     dateHired: Optional[date] = None
     created_at: datetime
     
