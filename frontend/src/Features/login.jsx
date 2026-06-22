@@ -39,8 +39,8 @@ export default function LoginPage() {
     if (!formData.employeeID) {
       newErrors.employeeID = 'Employee ID is required';
     } 
-    else if (!/^[a-zA-Z0-9]+$/.test(formData.employeeID)) {
-      newErrors.employeeID = 'Employee ID must not contain special characters or spaces';
+    else if (/\s/.test(formData.employeeID)) {
+      newErrors.employeeID = 'Employee ID must not contain spaces';
     }
 
     if (!formData.password) {
@@ -90,8 +90,8 @@ export default function LoginPage() {
       localStorage.setItem('userRole', data.role);
       localStorage.setItem('username', data.username);
 
-      // Route authenticated staff member out to dashboard shell
-      navigate('/dashboard');
+      // Redirect based on role: staff goes to POS, admin goes to dashboard
+      navigate(data.role === 'staff' ? '/pos' : '/dashboard');
 
     } catch (err) {
       setApiError(err.message || 'Something went wrong. Please check your connection.');

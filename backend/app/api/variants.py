@@ -26,9 +26,9 @@ async def add_variant(
             detail="Product not found"
         )
     
-    result = await db.execute((ProductVariant).where(ProductVariant.product_id == variant_data.product_id,
-                                                     ProductVariant.size == variant_data.size,
-                                                     ProductVariant.color == variant_data.color))
+    result = await db.execute(select(ProductVariant).where(ProductVariant.product_id == variant_data.product_id,
+                                                          ProductVariant.size == variant_data.size,
+                                                          ProductVariant.color == variant_data.color))
     existing_variant = result.scalar_one_or_none()
     
     if existing_variant:
@@ -40,12 +40,13 @@ async def add_variant(
     new_variant = ProductVariant(
         product_id = variant_data.product_id,
         size = variant_data.size,
-        color = variant_data.size,
+        color = variant_data.color,
         stock_threshold = variant_data.stock_threshold,
-        quantity_in_stock = variant_data.quantity_in_stock
+        quantity_in_stock = variant_data.quantity_in_stock,
+        image_url = variant_data.image_url,
     )
     
-    await db.add(new_variant)
+    db.add(new_variant)
     await db.commit()
     await db.refresh(new_variant)
     
@@ -119,9 +120,9 @@ async def update_variant(
         variant.quantity_in_stock = variant_data.quantity_in_stock
     
     
-    db.commit()
-    db.refresh(variant)
-    
+    await db.commit()
+    await db.refresh(variant)
+
     return variant
 
 
@@ -141,7 +142,7 @@ async def delete_variant(
             detail="Variant not found"
         )
         
-    db.delete()
-    db.commit(variant_delete)
-    
-    return {"message": f"Variant deleted successfully"}
+    await db.delete(variant_delete)
+    await db.commit()
+
+    return {"message": "Variant deleted successfully"}

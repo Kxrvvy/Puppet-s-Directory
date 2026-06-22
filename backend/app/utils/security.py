@@ -22,6 +22,7 @@ def verify_token(token: str) -> dict | None:
     try:
         payload = jwt.decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
         return payload
-    except JWTError:
+    except JWTError as e:
+        print(f"JWT ERROR: {type(e).__name__}: {e}")
         return None
     

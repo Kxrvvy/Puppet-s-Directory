@@ -40,12 +40,12 @@ async def restock_product(
     restock_log = RestockHistory(
         variant_id = restock_data.variant_id,
         user_id = current_user.user_id,
-        quantity_addded = restock_data.quantity_addedd
+        quantity_added = restock_data.quantity_added
     )
     
     db.add(restock_log)
-    db.commit()
-    db.refresh(restock_log)
+    await db.commit()
+    await db.refresh(restock_log)
     
     return restock_log
 
@@ -67,7 +67,7 @@ async def get_restock_history(
         )
         
     result = await db.execute(select(RestockHistory).where(RestockHistory.variant_id == variant_id))
-    variant_history = result.scalar().all()
+    variant_history = result.scalars().all()
     
     return variant_history
 
@@ -79,7 +79,7 @@ async def get_all_restock_history(
 ) -> list[RestockResponse]:
     
     result = await db.execute(select(RestockHistory))
-    history = result.scalar().all()
+    history = result.scalars().all()
     
     return history
     

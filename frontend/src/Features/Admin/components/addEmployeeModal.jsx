@@ -3,12 +3,13 @@ import { Eye, EyeOff, Image } from 'lucide-react';
 
 export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }) {
   const [formData, setFormData] = useState({
-    username: '', 
-    name: '', 
-    email: '', 
-    phone: '', 
-    dateHired: '', 
-    password: ''
+    username: '',
+    name: '',
+    email: '',
+    phone: '',
+    dateHired: '',
+    password: '',
+    status: 'active',
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -19,9 +20,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
         password: '' // Keep password empty for security during edit
       });
     } else {
-      setFormData({ 
-        username: '', name: '', email: '', phone: '', dateHired: '', password: '' 
-      });
+      setFormData({ username: '', name: '', email: '', phone: '', dateHired: '', password: '', status: 'active' });
     }
   }, [initialData, isOpen]);
 
@@ -31,33 +30,43 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('token');
-    
+
     const payload = { ...formData };
     if (!payload.password) delete payload.password;
 
-    const url = initialData 
-      ? `http://localhost:8000/users/${initialData.user_id}` 
+    const url = initialData
+      ? `http://localhost:8000/users/${initialData.user_id}`
       : 'http://localhost:8000/users/';
-    
+
     const method = initialData ? 'PUT' : 'POST';
 
     try {
       const response = await fetch(url, {
         method: method,
-        headers: { 
-          'Authorization': `Bearer ${token}`, 
-          'Content-Type': 'application/json' 
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify(payload)
       });
-      
+
       if (response.ok) {
         onAdd();
         onClose();
+      } else {
+        const err = await response.json();
+        alert(err.detail || 'Failed to save employee');
       }
     } catch (error) {
       console.error("Error saving user:", error);
     }
+  };
+
+  const toggleStatus = () => {
+    setFormData(prev => ({
+      ...prev,
+      status: prev.status === 'active' ? 'inactive' : 'active'
+    }));
   };
 
   if (!isOpen) return null;
@@ -146,6 +155,31 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
             </div>
           </div>
         </div>
+
+        {/* Account Status — only shown when editing */}
+        {initialData && (
+          <div className="mt-6 pt-5 border-t border-gray-400 flex items-center justify-between">
+            <div>
+              <p className="text-[10px] font-black uppercase text-gray-700">Account Status</p>
+              <p className="text-xs text-gray-500 mt-0.5">
+                {formData.status === 'active'
+                  ? 'Staff can log in and use the POS.'
+                  : 'Staff cannot log in until reactivated.'}
+              </p>
+            </div>
+            <button
+              type="button"
+              onClick={toggleStatus}
+              className={`px-5 py-2 rounded-full font-black text-xs transition ${
+                formData.status === 'active'
+                  ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700'
+                  : 'bg-red-100 text-red-700 hover:bg-green-100 hover:text-green-700'
+              }`}
+            >
+              {formData.status === 'active' ? 'ACTIVE — Click to Deactivate' : 'INACTIVE — Click to Activate'}
+            </button>
+          </div>
+        )}
 
         {/* Footer Buttons */}
         <div className="flex justify-between mt-8 gap-4">

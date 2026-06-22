@@ -23,7 +23,6 @@ async def add_product(
     
     new_product = Product(
         item_name=product_data.item_name,
-        desciption=product_data.desciption,
         base_price=product_data.base_price,
         category=product_data.category,
         image_url=product_data.image_url,
@@ -81,8 +80,6 @@ async def update_product(
         
     if product_data.item_name is not None:
         product.item_name = product_data.item_name
-    if product_data.description is not None:
-        product.description = product_data.desciption
     if product_data.base_price is not None:
         product.base_price = product_data.base_price
     if product_data.category is not None:
@@ -121,8 +118,8 @@ async def deactivate_product(
         
     product.status = "inactive"
     
-    db.commit()
-    db.refresh(product)
+    await db.commit()
+    await db.refresh(product)
     
     return product
 
