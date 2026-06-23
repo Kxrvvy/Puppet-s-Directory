@@ -41,7 +41,7 @@ async def create_user(
         phone=user_data.phone,        
         dateHired=user_data.dateHired,
         password=hash_password(user_data.password),
-        role="staff"
+        role=user_data.role
     )
     
     db.add(new_user)
@@ -51,18 +51,18 @@ async def create_user(
     return new_user
     
     
-@router.get("/", summary="Get All Users", description="Admin only. Returns a list of all staff accounts.")
+@router.get("/", summary="Get All Users", description="Admin only. Returns a list of all staff and admin accounts.")
 async def get_all_users(
     db: AsyncSession = Depends(get_db),
     current_user: User = Depends(require_admin)
 ) -> list[UserResponse]:
     
-    result = await db.execute(select(User).where(User.role == "staff"))
+    result = await db.execute(select(User))
     users = result.scalars().all()
     
     return users
     
-@router.put("/{user_id}", summary="Update User Role", description="Admin only. Update a user's role (staff or admin)")
+@router.put("/{user_id}", summary="Update User Role", description="Admin only. Update a user's details and role")
 async def update_staff(
     user_id: int,
     user_data: UserUpdate,
@@ -82,7 +82,7 @@ async def update_staff(
     if user_data.username is not None:
         user.username = user_data.username
     if user_data.name is not None: 
-            user.name = user_data.name
+        user.name = user_data.name
     if user_data.email is not None:
         user.email = user_data.email
     if user_data.phone is not None:
@@ -93,6 +93,8 @@ async def update_staff(
         user.password = hash_password(user_data.password)
     if user_data.status is not None:
         user.status = user_data.status
+    if user_data.role is not None:
+        user.role = user_data.role
 
     await db.commit()
     await db.refresh(user)

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Eye, EyeOff, Image } from 'lucide-react'; 
+import { Eye, EyeOff } from 'lucide-react'; 
 
 export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }) {
   const [formData, setFormData] = useState({
@@ -9,7 +9,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
     phone: '',
     dateHired: '',
     password: '',
-    status: 'active',
+    role: 'staff',
   });
   const [showPassword, setShowPassword] = useState(false);
 
@@ -17,10 +17,13 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
     if (initialData) {
       setFormData({
         ...initialData,
-        password: '' // Keep password empty for security during edit
+        password: '' 
       });
     } else {
-      setFormData({ username: '', name: '', email: '', phone: '', dateHired: '', password: '', status: 'active' });
+      setFormData({ 
+        username: '', name: '', email: '', phone: '', dateHired: '', 
+        password: '', role: 'staff' 
+      });
     }
   }, [initialData, isOpen]);
 
@@ -30,7 +33,6 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
 
   const handleSubmit = async () => {
     const token = localStorage.getItem('token');
-
     const payload = { ...formData };
     if (!payload.password) delete payload.password;
 
@@ -62,13 +64,6 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
     }
   };
 
-  const toggleStatus = () => {
-    setFormData(prev => ({
-      ...prev,
-      status: prev.status === 'active' ? 'inactive' : 'active'
-    }));
-  };
-
   if (!isOpen) return null;
 
   return (
@@ -80,45 +75,43 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
           {initialData ? 'Edit Employee' : 'Add New Employee'}
         </h2>
 
-        {/* Form Fields - Now spanning full width */}
         <div className="space-y-4">
-          <div className="flex justify-end items-center gap-2 mb-2">
-            <label className="text-[10px] font-black uppercase text-gray-700">Date Hired:</label>
-            <input 
-              name="dateHired" 
-              type="date" 
-              value={formData.dateHired} 
-              onChange={handleChange} 
-              className="bg-gray-300 rounded-lg p-2 text-xs w-32" 
-            />
+          <div className="flex justify-between items-center gap-4 mb-2">
+            <div>
+              <label className="block text-[10px] font-black uppercase text-gray-700">Role</label>
+              <select 
+                name="role" 
+                value={formData.role} 
+                onChange={handleChange}
+                className="bg-gray-300 rounded-lg p-2 text-xs w-32 font-bold uppercase"
+              >
+                <option value="staff">Staff</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+            <div>
+              <label className="block text-[10px] font-black uppercase text-gray-700">Date Hired:</label>
+              <input 
+                name="dateHired" 
+                type="date" 
+                value={formData.dateHired} 
+                onChange={handleChange} 
+                className="bg-gray-300 rounded-lg p-2 text-xs w-32" 
+              />
+            </div>
           </div>
 
           <label className="block text-[10px] font-black uppercase text-gray-700">Name</label>
-          <input 
-            name="name" 
-            value={formData.name} 
-            onChange={handleChange} 
-            className="w-full bg-gray-300 text-xs rounded-lg p-3" 
-          />
+          <input name="name" value={formData.name} onChange={handleChange} className="w-full bg-gray-300 text-xs rounded-lg p-3" />
 
           <div className="flex gap-4">
             <div className="w-1/2">
               <label className="block text-[10px] font-black uppercase text-gray-700">Email</label>
-              <input 
-                name="email" 
-                value={formData.email} 
-                onChange={handleChange} 
-                className="w-full text-xs bg-gray-300 rounded-lg p-3" 
-              />
+              <input name="email" value={formData.email} onChange={handleChange} className="w-full text-xs bg-gray-300 rounded-lg p-3" />
             </div>
             <div className="w-1/2">
               <label className="block text-[10px] font-black uppercase text-gray-700">Phone</label>
-              <input 
-                name="phone" 
-                value={formData.phone} 
-                onChange={handleChange} 
-                className="w-full text-xs bg-gray-300 rounded-lg p-3" 
-              />
+              <input name="phone" value={formData.phone} onChange={handleChange} className="w-full text-xs bg-gray-300 rounded-lg p-3" />
             </div>
           </div>
 
@@ -127,12 +120,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
             <div className="space-y-4">
               <div>
                 <label className="block text-[10px] font-black uppercase text-gray-700">Employee ID</label>
-                <input 
-                  name="username" 
-                  value={formData.username} 
-                  onChange={handleChange} 
-                  className="w-full text-xs bg-gray-300 rounded-lg p-3" 
-                />
+                <input name="username" value={formData.username} onChange={handleChange} className="w-full text-xs bg-gray-300 rounded-lg p-3" />
               </div>
               <div className="relative">
                 <label className="block text-[10px] font-black uppercase text-gray-700">Password</label>
@@ -141,7 +129,7 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
                   type={showPassword ? "text" : "password"} 
                   value={formData.password} 
                   onChange={handleChange} 
-                  placeholder={initialData ? "********" : "Enter password"}
+                  placeholder={initialData ? "Leave empty to keep current" : "Enter password"}
                   className="w-full text-xs bg-gray-300 rounded-lg p-3 pr-12" 
                 />
                 <button 
@@ -156,32 +144,6 @@ export default function AddEmployeeModal({ isOpen, onClose, onAdd, initialData }
           </div>
         </div>
 
-        {/* Account Status — only shown when editing */}
-        {initialData && (
-          <div className="mt-6 pt-5 border-t border-gray-400 flex items-center justify-between">
-            <div>
-              <p className="text-[10px] font-black uppercase text-gray-700">Account Status</p>
-              <p className="text-xs text-gray-500 mt-0.5">
-                {formData.status === 'active'
-                  ? 'Staff can log in and use the POS.'
-                  : 'Staff cannot log in until reactivated.'}
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={toggleStatus}
-              className={`px-5 py-2 rounded-full font-black text-xs transition ${
-                formData.status === 'active'
-                  ? 'bg-green-100 text-green-700 hover:bg-red-100 hover:text-red-700'
-                  : 'bg-red-100 text-red-700 hover:bg-green-100 hover:text-green-700'
-              }`}
-            >
-              {formData.status === 'active' ? 'ACTIVE — Click to Deactivate' : 'INACTIVE — Click to Activate'}
-            </button>
-          </div>
-        )}
-
-        {/* Footer Buttons */}
         <div className="flex justify-between mt-8 gap-4">
           <button 
             onClick={onClose} 

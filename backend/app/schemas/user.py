@@ -10,6 +10,7 @@ class UserCreate(BaseModel):
     phone: str
     password: str
     dateHired: Optional[date] = None
+    role: str
     
 class UserUpdate(BaseModel):
     username: Optional[str] = None
@@ -19,6 +20,7 @@ class UserUpdate(BaseModel):
     dateHired: Optional[date] = None
     password: Optional[str] = None
     status: Optional[str] = None
+    role: str = None
 
 class UserResponse(BaseModel):
     message: Optional[str] = None
@@ -28,9 +30,8 @@ class UserResponse(BaseModel):
     email: EmailStr
     phone: Optional[str] = None
     role: str
-    status: str = "active"
     dateHired: Optional[date] = None
-    created_at: datetime
+    created_at: Optional[datetime]
     
     class Config:
         from_attributes = True

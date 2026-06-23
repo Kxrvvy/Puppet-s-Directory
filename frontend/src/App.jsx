@@ -5,6 +5,7 @@ import AdminInventory from './Features/Admin/Inventory';
 import Staff from './Features/Admin/staff';
 import POSDashboard from './Features/POS/POSDashboard';
 import MainLayout from './Features/MainLayout';
+import Reports from './Features/Admin/reports';
 
 // Redirects to login if no token
 function ProtectedRoute({ children }) {
@@ -36,6 +37,7 @@ export default function App() {
           <Route path="/inventory" element={<AdminRoute><AdminInventory /></AdminRoute>} />
           <Route path="/staff" element={<AdminRoute><Staff /></AdminRoute>} />
           <Route path="/pos" element={<POSDashboard />} />
+          <Route path="/reports" element={<AdminRoute><Reports /></AdminRoute>} />
         </Route>
       </Routes>
     </Router>

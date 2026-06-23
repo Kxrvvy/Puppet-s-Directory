@@ -50,7 +50,7 @@ async def admin_dashboard(
     
     
     # staff
-    staff_entries = await db.execute(select(User).where(User.role == "staff"))
+    staff_entries = await db.execute(select(User).where(User.role.in_(["staff", "admin"])))
     staff = staff_entries.scalars().all()
     total_staff = len(staff)
     
@@ -98,7 +98,8 @@ async def admin_dashboard(
                     "user_id": s.user_id,
                     "username": s.username,
                     "email": s.email,
-                    "created_at": s.created_at
+                    "created_at": s.created_at,
+                    "role": s.role
                 }
                 for s in staff
             ]
