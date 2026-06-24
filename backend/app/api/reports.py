@@ -89,7 +89,7 @@ async def daily_report(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(require_admin)
 ):
-    start_date = datetime.now(timezone.utc) - timedelta(days=1)
+    start_date = (datetime.now(timezone.utc) - timedelta(days=1)).replace(tzinfo=None)
     return await generate_report(db, start_date, "daily")
 
 
@@ -98,7 +98,7 @@ async def weekly_report(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(require_admin)
 ):
-    start_date = datetime.now(timezone.utc) - timedelta(days=7)
+    start_date = (datetime.now(timezone.utc) - timedelta(days=7)).replace(tzinfo=None)
     return await generate_report(db, start_date, "weekly")
 
 
@@ -107,5 +107,5 @@ async def monthly_report(
     db: AsyncSession = Depends(get_db),
     current_user=Depends(require_admin)
 ):
-    start_date = datetime.now(timezone.utc) - timedelta(days=30)
+    start_date = (datetime.now(timezone.utc) - timedelta(days=30)).replace(tzinfo=None)
     return await generate_report(db, start_date, "monthly")

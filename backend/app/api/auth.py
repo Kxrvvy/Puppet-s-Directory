@@ -15,15 +15,26 @@ async def login(
     db: AsyncSession = Depends(get_db)
 ):
     
+    print(f"DEBUG: Received username: {form_data.username}")
+    
     result = await db.execute(select(User).where(User.username == form_data.username))
     user = result.scalar_one_or_none()
     
-    if not user or not verify_password(form_data.password, user.password):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid username or password",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+    #if not user or not verify_password(form_data.password, user.password):
+    if not user:
+        print(f"DEBUG: User '{form_data.username}' not found in database.")
+        raise HTTPException(status_code=401, detail="User not found")
+
+    print(f"DEBUG: Attempting to verify user: {user.username}")
+    print(f"DEBUG: Stored hash length: {len(user.password)}")
+    
+    is_valid = verify_password(form_data.password, user.password)
+    print(f"DEBUG: Password verification result: {is_valid}")
+    
+    if not is_valid:
+        raise HTTPException(status_code=401, detail="Incorrect password")
+
+
 
     if getattr(user, 'status', 'active') == 'inactive':
         raise HTTPException(

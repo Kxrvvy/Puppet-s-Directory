@@ -41,7 +41,6 @@ export default function Staff() {
   };
 
   return (
-    // Changed to p-8 to match the Dashboard's tighter, cleaner spacing
     <div className="p-8">
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-2xl font-black">EMPLOYEE</h1>
@@ -53,10 +52,9 @@ export default function Staff() {
         </button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {staffList.map((staff) => (
           <div key={staff.user_id} className="group relative bg-neutral-100 p-6 rounded-xl border border-neutral-200 shadow-sm">
-            {/* Hover overlay remains the same but with darker neutral colors */}
             <div className="absolute inset-0 bg-neutral-900/90 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 rounded-xl">
               <div className="flex gap-2 w-full px-6">
                 <button onClick={() => { setSelectedStaff(staff); setModals(prev => ({ ...prev, delete: true })); }} className="flex-1 bg-white text-red-600 py-2 rounded-lg font-black text-xs hover:bg-gray-200">Delete</button>
@@ -70,13 +68,13 @@ export default function Staff() {
             
             <div className="flex items-center justify-between mb-0.5">
               <h3 className="font-black text-sm text-neutral-900">{staff.name}</h3>
-              <span className={`text-[10px] font-black px-2 py-0.5 rounded-full ${
-                staff.status === 'inactive'
-                  ? 'bg-red-100 text-red-600'
-                  : 'bg-green-100 text-green-700'
-              }`}>
-                {staff.status === 'inactive' ? 'INACTIVE' : 'ACTIVE'}
-              </span>
+              <div className="flex gap-2">
+                <span className={`text-[10px] font-black px-2 py-0.5 rounded-full uppercase ${
+                    staff.role === 'admin' ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'
+                }`}>
+                    {staff.role || 'staff'}
+                </span>
+              </div>
             </div>
             <p className="text-xs font-bold text-neutral-500 mb-6">{staff.username}</p>
             
