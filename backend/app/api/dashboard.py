@@ -4,6 +4,7 @@ from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.models import Product, ProductVariant, RestockHistory, SalesInvoice, Transaction, User
 from datetime import datetime, timedelta, timezone
+from collections import defaultdict
 from app.api.reports import generate_report
 from app.dependencies import require_admin
 from app.database import get_db
@@ -60,6 +61,51 @@ async def admin_dashboard(
                                         .limit(5))
     recent_transactions = recent_tx_result.scalars().all()
     
+    # ── 7-day sales analytics ─────────────────────────────────────────────────
+    seven_days_ago = (datetime.now(timezone.utc) - timedelta(days=6)).replace(
+        tzinfo=None, hour=0, minute=0, second=0, microsecond=0
+    )
+    analytics_result = await db.execute(
+        select(Transaction)
+        .where(Transaction.purchased_at >= seven_days_ago)
+        .order_by(Transaction.purchased_at)
+    )
+    analytics_tx = analytics_result.scalars().all()
+
+    # Group by calendar day
+    daily_map = defaultdict(lambda: {"sales": 0.0, "transactions": 0})
+    for tx in analytics_tx:
+        key = tx.purchased_at.strftime("%b %d")
+        daily_map[key]["sales"] += tx.total_amount
+        daily_map[key]["transactions"] += 1
+
+    # Build ordered 7-day list (fill missing days with 0)
+    sales_analytics = []
+    week_total = 0.0
+    best_day_sales = 0.0
+    best_day_label = ""
+    for i in range(6, -1, -1):
+        d = datetime.now() - timedelta(days=i)
+        key = d.strftime("%b %d")
+        short = d.strftime("%a")  # Mon, Tue…
+        day_sales = round(daily_map[key]["sales"], 2)
+        day_tx = daily_map[key]["transactions"]
+        sales_analytics.append({
+            "day": short,
+            "date": key,
+            "sales": day_sales,
+            "transactions": day_tx,
+        })
+        week_total += day_sales
+        if day_sales > best_day_sales:
+            best_day_sales = day_sales
+            best_day_label = short
+
+    # Payment method breakdown (last 7 days)
+    payment_breakdown = defaultdict(int)
+    for tx in analytics_tx:
+        payment_breakdown[tx.payment_method] += 1
+
     # Low Stock Alert
     low_stock_alert_result = await db.execute(select(ProductVariant)
                                 .options(selectinload(ProductVariant.product))
@@ -113,7 +159,14 @@ async def admin_dashboard(
             }
             for tx in recent_transactions
         ],
-        "low_stock_alerts": low_stock_list
+        "low_stock_alerts": low_stock_list,
+        "sales_analytics": {
+            "chart": sales_analytics,
+            "week_total": round(week_total, 2),
+            "best_day": best_day_label,
+            "best_day_sales": round(best_day_sales, 2),
+            "payment_breakdown": dict(payment_breakdown),
+        }
     }
         
     

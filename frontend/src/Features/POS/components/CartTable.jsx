@@ -27,7 +27,7 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
       </div>
 
       {/* Items */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
+      <div className="flex-1 min-h-0 overflow-y-auto scrollbar-dark">
         {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full py-12 gap-3 px-6 text-center">
             <div className="w-14 h-14 rounded-full bg-neutral-800 flex items-center justify-center">

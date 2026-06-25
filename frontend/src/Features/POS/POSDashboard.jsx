@@ -263,9 +263,9 @@ export default function POSDashboard() {
 
       {/* ─── Right: Sale Panel ─────────────────────────────────────────── */}
       <div
-        className={`flex flex-col overflow-hidden bg-neutral-900 border-l border-neutral-800
-          lg:w-95 xl:w-105 shrink-0
-          ${mobileTab === 'cart' ? 'flex flex-1' : 'hidden lg:flex'}`}
+        className={`flex flex-col min-h-0 overflow-hidden bg-neutral-900 border-l border-neutral-800
+          lg:flex lg:flex-none lg:w-95 xl:w-105
+          ${mobileTab === 'cart' ? 'flex flex-1' : 'hidden'}`}
       >
         {/* Mobile cart top bar */}
         <div className="lg:hidden shrink-0 bg-neutral-800 border-b border-neutral-700 px-4 py-3 flex items-center gap-3">
