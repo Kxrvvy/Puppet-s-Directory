@@ -138,7 +138,7 @@ export default function VariantPickerModal({ product, onClose, onAdd }) {
         </div>
 
         {/* ── Body ── */}
-        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5">
+        <div className="flex-1 overflow-y-auto px-5 py-4 space-y-5 scrollbar-thin">
           {loading ? (
             <div className="flex items-center justify-center py-12 gap-2 text-gray-400">
               <Loader2 size={18} className="animate-spin" />

@@ -5,6 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy.orm import selectinload
 from app.models import Transaction, SalesInvoice, ProductVariant
+from sqlalchemy.orm import selectinload
 from app.dependencies import require_admin
 from app.database import get_db
 
@@ -58,21 +59,35 @@ async def generate_report(db: AsyncSession, start_date: datetime, period: str):
 
     recent_tx_result = await db.execute(
         select(Transaction)
+        .options(
+            selectinload(Transaction.sales_invoices)
+            .selectinload(SalesInvoice.product_variant)
+            .selectinload(ProductVariant.product)
+        )
         .where(Transaction.purchased_at >= start_date)
         .order_by(Transaction.purchased_at.desc())
-        .limit(5)
     )
     recent_tx = recent_tx_result.scalars().all()
 
-    recent_transactions = [
-        {
+    recent_transactions = []
+    for tx in recent_tx:
+        items = []
+        for inv in tx.sales_invoices:
+            if inv.product_variant and inv.product_variant.product:
+                items.append({
+                    "product_name": inv.product_variant.product.item_name,
+                    "size": inv.product_variant.size,
+                    "color": inv.product_variant.color,
+                    "quantity_sold": inv.quantity_sold,
+                    "unit_price": inv.unit_price,
+                })
+        recent_transactions.append({
             "transaction_id": tx.transaction_id,
             "payment_method": tx.payment_method,
             "total_amount": tx.total_amount,
-            "purchased_at": tx.purchased_at
-        }
-        for tx in recent_tx
-    ]
+            "purchased_at": tx.purchased_at,
+            "items": items,
+        })
 
     return {
         "period": period,
