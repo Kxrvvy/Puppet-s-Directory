@@ -39,7 +39,7 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
   const fmt = (n) => n.toLocaleString('en-PH', { minimumFractionDigits: 2 });
 
   return (
-    <div className="shrink-0 border-t border-slate-800 bg-slate-900">
+    <div className="shrink-0 border-t border-neutral-800 bg-neutral-900">
       {/* Total */}
       <div className="px-5 pt-4 pb-3">
         <div className="flex items-center justify-between">
@@ -55,8 +55,8 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
             onClick={selectCash}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition ${
               paymentMethod === 'cash'
-                ? 'bg-slate-600 text-white'
-                : 'bg-slate-800 text-slate-500 hover:text-slate-300'
+                ? 'bg-neutral-600 text-white'
+                : 'bg-neutral-800 text-neutral-500 hover:text-neutral-300'
             }`}
           >
             <Banknote size={13} /> Cash
@@ -65,8 +65,8 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
             onClick={() => { if (!isEPayment) setPaymentMethod('gcash'); }}
             className={`flex-1 flex items-center justify-center gap-1.5 py-2 rounded-lg text-xs font-bold transition ${
               isEPayment
-                ? 'bg-slate-600 text-white'
-                : 'bg-slate-800 text-slate-500 hover:text-slate-300'
+                ? 'bg-neutral-600 text-white'
+                : 'bg-neutral-800 text-neutral-500 hover:text-neutral-300'
             }`}
           >
             <CreditCard size={13} /> E-Payment
@@ -89,7 +89,7 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
                 className={`flex-1 py-1.5 rounded-lg text-xs font-black transition ${
                   paymentMethod === id
                     ? `${color} text-white shadow-md`
-                    : 'bg-slate-800 text-slate-400 hover:text-slate-200'
+                    : 'bg-neutral-800 text-neutral-400 hover:text-neutral-200'
                 }`}
               >
                 {label}
@@ -103,17 +103,17 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
       {paymentMethod === 'cash' && (
         <div className="px-5 pb-3 space-y-2">
           <div>
-            <label className="block text-xs text-slate-400 font-semibold mb-1.5">Cash Received</label>
+            <label className="block text-xs text-neutral-400 font-semibold mb-1.5">Cash Received</label>
             <input
               type="number"
               min="0"
               value={cashReceived}
               onChange={(e) => setCashReceived(e.target.value)}
               placeholder={`₱${fmt(total)}`}
-              className={`w-full bg-slate-800 border text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 placeholder-slate-600 transition ${
+              className={`w-full bg-neutral-800 border text-white text-sm rounded-lg px-3 py-2 focus:outline-none focus:ring-2 placeholder-neutral-600 transition ${
                 insufficientCash
                   ? 'border-red-500/60 focus:ring-red-500/40'
-                  : 'border-slate-700 focus:ring-slate-500'
+                  : 'border-neutral-700 focus:ring-neutral-500'
               }`}
             />
             {insufficientCash && (
@@ -121,8 +121,8 @@ export default function PaymentPanel({ cart, onCheckout, processing }) {
             )}
           </div>
           <div className="flex items-center justify-between">
-            <span className="text-slate-400 text-xs font-semibold">Change</span>
-            <span className={`font-black text-base ${change > 0 ? 'text-emerald-400' : 'text-slate-600'}`}>
+            <span className="text-neutral-400 text-xs font-semibold">Change</span>
+            <span className={`font-black text-base ${change > 0 ? 'text-emerald-400' : 'text-neutral-600'}`}>
               ₱{fmt(change)}
             </span>
           </div>

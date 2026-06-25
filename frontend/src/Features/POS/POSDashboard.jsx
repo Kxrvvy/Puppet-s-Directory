@@ -65,7 +65,7 @@ function ReceiptModal({ receipt, cartSnapshot, onClose }) {
 
         <button
           onClick={onClose}
-          className="w-full bg-slate-800 hover:bg-slate-700 text-white font-black py-3 rounded-xl transition text-sm"
+          className="w-full bg-neutral-800 hover:bg-neutral-700 text-white font-black py-3 rounded-xl transition text-sm"
         >
           New Sale
         </button>
@@ -209,8 +209,8 @@ export default function POSDashboard() {
           </button>
 
           <div className="flex items-center gap-2 shrink-0">
-            <Package size={17} className="text-slate-600 hidden sm:block" />
-            <span className="font-black text-slate-800 text-sm tracking-wide hidden sm:block">
+            <Package size={17} className="text-neutral-600 hidden sm:block" />
+            <span className="font-black text-neutral-800 text-sm tracking-wide hidden sm:block">
               PUPPET'S DIRECTORY
             </span>
             <span className="text-gray-300 hidden sm:block">·</span>
@@ -241,14 +241,14 @@ export default function POSDashboard() {
           ) : fetchError ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
               <p className="text-red-500 font-semibold text-sm">{fetchError}</p>
-              <button onClick={fetchProducts} className="text-xs bg-slate-800 text-white px-4 py-2 rounded-lg">Retry</button>
+              <button onClick={fetchProducts} className="text-xs bg-neutral-800 text-white px-4 py-2 rounded-lg">Retry</button>
             </div>
           ) : filteredProducts.length === 0 ? (
             <div className="flex flex-col items-center justify-center h-full gap-2 text-gray-400">
               <Package size={36} className="text-gray-300" />
               <p className="text-sm font-medium">No products found</p>
               {searchQuery && (
-                <button onClick={() => setSearchQuery('')} className="text-xs text-slate-600 underline">Clear search</button>
+                <button onClick={() => setSearchQuery('')} className="text-xs text-neutral-600 underline">Clear search</button>
               )}
             </div>
           ) : (
@@ -263,20 +263,20 @@ export default function POSDashboard() {
 
       {/* ─── Right: Sale Panel ─────────────────────────────────────────── */}
       <div
-        className={`flex flex-col overflow-hidden bg-slate-900 border-l border-slate-800
+        className={`flex flex-col overflow-hidden bg-neutral-900 border-l border-neutral-800
           lg:w-95 xl:w-105 shrink-0
           ${mobileTab === 'cart' ? 'flex flex-1' : 'hidden lg:flex'}`}
       >
         {/* Mobile cart top bar */}
-        <div className="lg:hidden shrink-0 bg-slate-800 border-b border-slate-700 px-4 py-3 flex items-center gap-3">
+        <div className="lg:hidden shrink-0 bg-neutral-800 border-b border-neutral-700 px-4 py-3 flex items-center gap-3">
           <button
             onClick={openSidebar}
-            className="w-9 h-9 rounded-lg bg-slate-700 hover:bg-slate-600 flex items-center justify-center transition"
+            className="w-9 h-9 rounded-lg bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center transition"
           >
-            <Menu size={17} className="text-slate-300" />
+            <Menu size={17} className="text-neutral-300" />
           </button>
           <span className="text-white font-black text-sm flex-1">Current Sale</span>
-          <ShoppingCart size={16} className="text-slate-400" />
+          <ShoppingCart size={16} className="text-neutral-400" />
         </div>
 
         <CartTable
@@ -293,19 +293,19 @@ export default function POSDashboard() {
         <button
           onClick={() => setMobileTab('products')}
           className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 text-xs font-bold transition ${
-            mobileTab === 'products' ? 'text-slate-800' : 'text-gray-400'
+            mobileTab === 'products' ? 'text-neutral-800' : 'text-gray-400'
           }`}
         >
           <Package size={20} />
           <span>Products</span>
           {mobileTab === 'products' && (
-            <span className="absolute bottom-0 left-0 right-1/2 h-0.5 bg-slate-800 rounded-full" />
+            <span className="absolute bottom-0 left-0 right-1/2 h-0.5 bg-neutral-800 rounded-full" />
           )}
         </button>
         <button
           onClick={() => setMobileTab('cart')}
           className={`flex-1 flex flex-col items-center justify-center py-3 gap-1 text-xs font-bold transition relative ${
-            mobileTab === 'cart' ? 'text-slate-800' : 'text-gray-400'
+            mobileTab === 'cart' ? 'text-neutral-800' : 'text-gray-400'
           }`}
         >
           <div className="relative">
@@ -318,7 +318,7 @@ export default function POSDashboard() {
           </div>
           <span>Cart{cartCount > 0 ? ` (${cartCount})` : ''}</span>
           {mobileTab === 'cart' && (
-            <span className="absolute bottom-0 left-1/2 right-0 h-0.5 bg-slate-800 rounded-full" />
+            <span className="absolute bottom-0 left-1/2 right-0 h-0.5 bg-neutral-800 rounded-full" />
           )}
         </button>
       </div>

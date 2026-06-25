@@ -6,12 +6,12 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
   return (
     <>
       {/* Header */}
-      <div className="shrink-0 flex items-center justify-between px-5 py-4 border-b border-slate-800">
+      <div className="shrink-0 flex items-center justify-between px-5 py-4 border-b border-neutral-800">
         <div className="flex items-center gap-2">
-          <ShoppingCart size={16} className="text-slate-400" />
+          <ShoppingCart size={16} className="text-neutral-400" />
           <span className="text-white font-bold text-sm">Current Sale</span>
           {totalItems > 0 && (
-            <span className="bg-slate-700 text-slate-300 text-xs font-bold px-2 py-0.5 rounded-full">
+            <span className="bg-neutral-700 text-neutral-300 text-xs font-bold px-2 py-0.5 rounded-full">
               {totalItems} item{totalItems !== 1 ? 's' : ''}
             </span>
           )}
@@ -30,20 +30,20 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
       <div className="flex-1 min-h-0 overflow-y-auto">
         {cart.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-full py-12 gap-3 px-6 text-center">
-            <div className="w-14 h-14 rounded-full bg-slate-800 flex items-center justify-center">
-              <ShoppingCart size={22} className="text-slate-600" />
+            <div className="w-14 h-14 rounded-full bg-neutral-800 flex items-center justify-center">
+              <ShoppingCart size={22} className="text-neutral-600" />
             </div>
-            <p className="text-slate-500 text-sm font-medium leading-snug">
+            <p className="text-neutral-500 text-sm font-medium leading-snug">
               No items yet.<br />
-              <span className="text-slate-600">Click a product to add it to the cart.</span>
+              <span className="text-neutral-600">Click a product to add it to the cart.</span>
             </p>
           </div>
         ) : (
-          <div className="divide-y divide-slate-800/60">
+          <div className="divide-y divide-neutral-800/60">
             {cart.map((item) => (
-              <div key={item.cartId} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-800/30 transition">
+              <div key={item.cartId} className="flex items-center gap-3 px-5 py-3 hover:bg-neutral-800/30 transition">
                 {/* Thumbnail */}
-                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-slate-700">
+                <div className="w-10 h-10 rounded-lg overflow-hidden shrink-0 bg-neutral-700">
                   {item.image_url ? (
                     <img
                       src={item.image_url}
@@ -61,8 +61,8 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
                 {/* Product info */}
                 <div className="flex-1 min-w-0">
                   <p className="text-white text-xs font-bold truncate leading-snug">{item.item_name}</p>
-                  <p className="text-slate-400 text-xs">{item.size} · {item.color}</p>
-                  <p className="text-slate-200 text-xs font-bold mt-0.5">
+                  <p className="text-neutral-400 text-xs">{item.size} · {item.color}</p>
+                  <p className="text-neutral-200 text-xs font-bold mt-0.5">
                     ₱{(item.price * item.quantity).toLocaleString('en-PH', { minimumFractionDigits: 2 })}
                   </p>
                 </div>
@@ -73,7 +73,7 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
                     onClick={() =>
                       item.quantity === 1 ? onRemove(item.variant_id) : onUpdateQuantity(item.variant_id, -1)
                     }
-                    className="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 flex items-center justify-center text-slate-300 transition"
+                    className="w-6 h-6 rounded bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center text-neutral-300 transition"
                   >
                     <Minus size={10} />
                   </button>
@@ -83,13 +83,13 @@ export default function CartTable({ cart, onUpdateQuantity, onRemove, onClear })
                   <button
                     onClick={() => onUpdateQuantity(item.variant_id, 1)}
                     disabled={item.quantity >= item.available_stock}
-                    className="w-6 h-6 rounded bg-slate-700 hover:bg-slate-600 flex items-center justify-center text-slate-300 transition disabled:opacity-30"
+                    className="w-6 h-6 rounded bg-neutral-700 hover:bg-neutral-600 flex items-center justify-center text-neutral-300 transition disabled:opacity-30"
                   >
                     <Plus size={10} />
                   </button>
                   <button
                     onClick={() => onRemove(item.variant_id)}
-                    className="w-6 h-6 rounded hover:bg-red-900/50 flex items-center justify-center text-slate-600 hover:text-red-400 transition ml-0.5"
+                    className="w-6 h-6 rounded hover:bg-red-900/50 flex items-center justify-center text-neutral-600 hover:text-red-400 transition ml-0.5"
                   >
                     <Trash2 size={10} />
                   </button>
