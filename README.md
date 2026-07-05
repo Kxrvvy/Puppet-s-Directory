@@ -21,7 +21,7 @@ A full-stack web app for tracking apparel stock, managing product variants, and 
 
 **Sampayan ni Puppet** needed a single source of truth for two things that used to live in separate spreadsheets: what's in stock, and what's being sold. Puppet's Directory brings both into one app — a cashier-facing POS screen for ringing up sales, and an admin side for managing inventory, staff accounts, and sales reports.
 
-It was built as a school capstone/group project, and is now feature-complete.
+It was built as a school group project, and is now feature-complete.
 
 ## ✨ Features
 
@@ -38,19 +38,22 @@ It was built as a school capstone/group project, and is now feature-complete.
 <div align="center">
 
 **Login**
-<img src="docs/screenshots/login.png" width="700" alt="Login screen" />
+<img src="docs/screenshots/Login.png" width="700" alt="Login screen" />
 
 **Point of Sale**
-<img src="docs/screenshots/pos-dashboard.png" width="700" alt="POS dashboard" />
+<img src="docs/screenshots/POS.png" width="700" alt="POS dashboard" />
 
 **Admin Dashboard**
-<img src="docs/screenshots/admin-dashboard.png" width="700" alt="Admin dashboard with sales chart" />
+<img src="docs/screenshots/AdminDashboard.png" width="700" alt="Admin dashboard with sales chart" />
 
 **Inventory Management**
-<img src="docs/screenshots/inventory.png" width="700" alt="Inventory table" />
+<img src="docs/screenshots/Inventory.png" width="700" alt="Inventory table" />
+
+**Sales Analytics**
+<img src="docs/screenshots/SalesAnalytics.png" width="700" alt="Sales Page" />
 
 **Staff Management**
-<img src="docs/screenshots/staff.png" width="700" alt="Staff management page" />
+<img src="docs/screenshots/Staff.png" width="700" alt="Staff management page" />
 
 </div>
 
@@ -259,4 +262,4 @@ git push origin --delete <feature-name>-v1.0.0
 
 ## 📌 Status
 
-This project is **complete**, built as a capstone/group project for *Sampayan ni Puppet*.
+This project is **complete**, built as a group project for *Sampayan ni Puppet*.
