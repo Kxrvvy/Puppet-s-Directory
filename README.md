@@ -35,27 +35,38 @@ It was built as a school group project, and is now feature-complete.
 
 ## 🖼️ Screenshots
 
-<div align="center">
-
-**Login**
-<img src="docs/screenshots/Login.png" width="700" alt="Login screen" />
-
-**Point of Sale**
-<img src="docs/screenshots/POS.png" width="700" alt="POS dashboard" />
-
-**Admin Dashboard**
-<img src="docs/screenshots/AdminDashboard.png" width="700" alt="Admin dashboard with sales chart" />
-
-**Inventory Management**
-<img src="docs/screenshots/Inventory.png" width="700" alt="Inventory table" />
-
-**Sales Analytics**
-<img src="docs/screenshots/SalesAnalytics.png" width="700" alt="Sales Page" />
-
-**Staff Management**
-<img src="docs/screenshots/Staff.png" width="700" alt="Staff management page" />
-
-</div>
+<table>
+<tr>
+<td width="50%" align="center">
+<img src="docs/screenshots/Login.png" width="100%" alt="Login screen" />
+<b>Login</b>
+</td>
+<td width="50%" align="center">
+<img src="docs/screenshots/POS.png" width="100%" alt="POS dashboard" />
+<b>Point of Sale</b>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+<img src="docs/screenshots/AdminDashboard.png" width="100%" alt="Admin dashboard with sales chart" />
+<b>Admin Dashboard</b>
+</td>
+<td width="50%" align="center">
+<img src="docs/screenshots/Inventory.png" width="100%" alt="Inventory table" />
+<b>Inventory Management</b>
+</td>
+</tr>
+<tr>
+<td width="50%" align="center">
+<img src="docs/screenshots/SalesAnalytics.png" width="100%" alt="Sales analytics page" />
+<b>Sales Analytics</b>
+</td>
+<td width="50%" align="center">
+<img src="docs/screenshots/Staff.png" width="100%" alt="Staff management page" />
+<b>Staff Management</b>
+</td>
+</tr>
+</table>
 
 ## 🧱 Tech Stack
 
