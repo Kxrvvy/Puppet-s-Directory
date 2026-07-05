@@ -119,7 +119,7 @@ Puppet-s-Directory/
 | Feature | Admin | Staff |
 |---|:---:|:---:|
 | POS / Process Sales | ✅ | ✅ |
-| View Inventory | ✅ | ✅ |
+| View Inventory | ✅ | ❌ |
 | Manage Products (CRUD) | ✅ | ❌ |
 | Manage User Accounts | ✅ | ❌ |
 | Financial Reports | ✅ | ❌ |
